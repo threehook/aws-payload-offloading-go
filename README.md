@@ -1,0 +1,2 @@
+mockgen -destination=mocks/mock_s3_client.go -package=mocks threehook/aws-payload-offloading-go S3ClientI<br/>
+mockgen -destination=mocks/mock_s3_dao.go -package=mocks threehook/aws-payload-offloading-go S3DaoI<br/>
