@@ -1,8 +1,8 @@
 package payload
 
 import (
-	po "threehook/aws-payload-offloading-go"
 	"github.com/google/uuid"
+	po "github.com/threehook/aws-payload-offloading-go"
 	"log"
 )
 
@@ -14,23 +14,23 @@ type PayloadStore interface {
 	// with S3 key
 	StoreOriginalPayloadForS3Key(payload, s3Key string) (string, error)
 
- 	// GetOriginalPayload retrieves the original payload using the given payloadPointer. The pointer must have been obtained using
- 	// StoreOriginalPayload
+	// GetOriginalPayload retrieves the original payload using the given payloadPointer. The pointer must have been obtained using
+	// StoreOriginalPayload
 	GetOriginalPayload(payloadPointer string) (string, error)
 
- 	// DeleteOriginalPayload deletes the original payload using the given payloadPointer. The pointer must have been
+	// DeleteOriginalPayload deletes the original payload using the given payloadPointer. The pointer must have been
 	// obtained using StoreOriginalPayload
 	DeleteOriginalPayload(payloadPointer string) error
 }
 
 type S3BackedPayloadStore struct {
 	S3BucketName string
-	S3Dao po.S3DaoI
+	S3Dao        po.S3DaoI
 }
 
 func (bps *S3BackedPayloadStore) StoreOriginalPayload(payload string) (string, error) {
-	s3Key := uuid.New().String();
-	return bps.StoreOriginalPayloadForS3Key(payload, s3Key);
+	s3Key := uuid.New().String()
+	return bps.StoreOriginalPayloadForS3Key(payload, s3Key)
 }
 
 func (bps *S3BackedPayloadStore) StoreOriginalPayloadForS3Key(payload, s3Key string) (string, error) {
@@ -41,8 +41,8 @@ func (bps *S3BackedPayloadStore) StoreOriginalPayloadForS3Key(payload, s3Key str
 
 	log.Printf("S3 object created, Bucket name: %s, Object key:  %s.", bps.S3BucketName, s3Key) // info
 
-    // Convert S3 pointer (bucket name, key, etc) to JSON string
-    s3Pointer := PayloadS3Pointer{bps.S3BucketName, s3Key};
+	// Convert S3 pointer (bucket name, key, etc) to JSON string
+	s3Pointer := PayloadS3Pointer{bps.S3BucketName, s3Key}
 	json, _ := s3Pointer.ToJson()
 
 	return json, nil

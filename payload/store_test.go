@@ -1,10 +1,10 @@
 package payload
 
 import (
-	"threehook/aws-payload-offloading-go/mocks"
 	"errors"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
+	"github.com/threehook/aws-payload-offloading-go/mocks"
 	"io/ioutil"
 	"log"
 	"os"
@@ -13,8 +13,8 @@ import (
 
 const (
 	s3BucketName = "test-bucket-name"
-	anyS3Key = "AnyS3key";
-	anyPayload = "AnyPayload"
+	anyS3Key     = "AnyS3key"
+	anyPayload   = "AnyPayload"
 )
 
 // Suppress logging in unit tests
@@ -37,7 +37,7 @@ func TestStoreOriginalPayloadOnSuccess(t *testing.T) {
 	payloadStore := S3BackedPayloadStore{S3BucketName: s3BucketName, S3Dao: mockS3Dao}
 	actualPayloadPointer, _ := payloadStore.StoreOriginalPayload(anyPayload)
 
-	expectedPayloadPointer := &PayloadS3Pointer{s3BucketName, capturedArgsMap["s3Key"].(string)};
+	expectedPayloadPointer := &PayloadS3Pointer{s3BucketName, capturedArgsMap["s3Key"].(string)}
 
 	assert := assert.New(t)
 	ptrJson, _ := expectedPayloadPointer.ToJson()
@@ -58,7 +58,7 @@ func TestStoreOriginalPayloadWithS3KeyOnSuccess(t *testing.T) {
 	payloadStore := S3BackedPayloadStore{S3BucketName: s3BucketName, S3Dao: mockS3Dao}
 	actualPayloadPointer, _ := payloadStore.StoreOriginalPayloadForS3Key(anyPayload, anyS3Key)
 
-	expectedPayloadPointer := &PayloadS3Pointer{s3BucketName, anyS3Key};
+	expectedPayloadPointer := &PayloadS3Pointer{s3BucketName, anyS3Key}
 
 	assert := assert.New(t)
 	ptrJson, _ := expectedPayloadPointer.ToJson()
@@ -92,8 +92,8 @@ func TestStoreOriginalPayloadDoesAlwaysCreateNewObjects(t *testing.T) {
 	//Store any other payload and validate that the pointers are different
 	anyOtherActualPayloadPointer, _ := payloadStore.StoreOriginalPayload(anyPayload)
 
-	anyExpectedPayloadPointer := &PayloadS3Pointer{s3BucketName, capturedArgsMap["s3Key_1"].(string)};
-	anyOtherExpectedPayloadPointer := &PayloadS3Pointer{s3BucketName, capturedArgsMap["s3Key_2"].(string)};
+	anyExpectedPayloadPointer := &PayloadS3Pointer{s3BucketName, capturedArgsMap["s3Key_1"].(string)}
+	anyOtherExpectedPayloadPointer := &PayloadS3Pointer{s3BucketName, capturedArgsMap["s3Key_2"].(string)}
 
 	assert := assert.New(t)
 	ptrJson, _ := anyExpectedPayloadPointer.ToJson()
@@ -132,7 +132,7 @@ func TestGetOriginalPayloadOnSuccess(t *testing.T) {
 
 	anyPointer := PayloadS3Pointer{S3BucketName: s3BucketName, S3Key: anyS3Key}
 	payloadStore := S3BackedPayloadStore{S3BucketName: s3BucketName, S3Dao: mockS3Dao}
-	ptrJson, _ :=  anyPointer.ToJson()
+	ptrJson, _ := anyPointer.ToJson()
 	actualPayload, _ := payloadStore.GetOriginalPayload(ptrJson)
 
 	assert := assert.New(t)
@@ -159,7 +159,7 @@ func TestGetOriginalPayloadOnS3Failure(t *testing.T) {
 
 	anyPointer := PayloadS3Pointer{S3BucketName: s3BucketName, S3Key: anyS3Key}
 	payloadStore := S3BackedPayloadStore{S3BucketName: s3BucketName, S3Dao: mockS3Dao}
-	ptrJson, _ :=  anyPointer.ToJson()
+	ptrJson, _ := anyPointer.ToJson()
 	_, err := payloadStore.GetOriginalPayload(ptrJson)
 
 	expectedError := errors.New("S3 Exception")
@@ -182,7 +182,7 @@ func TestDeleteOriginalPayloadOnSuccess(t *testing.T) {
 
 	anyPointer := PayloadS3Pointer{S3BucketName: s3BucketName, S3Key: anyS3Key}
 	payloadStore := S3BackedPayloadStore{S3BucketName: s3BucketName, S3Dao: mockS3Dao}
-	ptrJson, _ :=  anyPointer.ToJson()
+	ptrJson, _ := anyPointer.ToJson()
 	payloadStore.DeleteOriginalPayload(ptrJson)
 
 	assert := assert.New(t)

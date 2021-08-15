@@ -1,4 +1,4 @@
-module threehook/aws-payload-offloading-go
+module github.com/threehook/aws-payload-offloading-go
 
 go 1.15
 
