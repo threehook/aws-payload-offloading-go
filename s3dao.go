@@ -30,9 +30,9 @@ func (dao *S3Dao) GetTextFromS3(s3BucketName, s3Key string) (string, error) {
 	}
 
 	ctx := context.Background()
-	object, err := dao.S3Client.GetObject(ctx, getObjectInput);
+	object, err := dao.S3Client.GetObject(ctx, getObjectInput)
 	if err != nil {
-		err := errors.New("Failed to get the S3 object which contains the payload.")
+		err := errors.New("Failed to get the S3Client object which contains the payload.")
 		log.Println(err)
 		return "", err
 	}
@@ -40,7 +40,7 @@ func (dao *S3Dao) GetTextFromS3(s3BucketName, s3Key string) (string, error) {
 	buf := new(bytes.Buffer)
 	_, err = buf.ReadFrom(object.Body)
 	if err != nil {
-		err := errors.New("Failure when handling the message which was read from S3 object.")
+		err := errors.New("Failure when handling the message which was read from S3Client object.")
 		log.Println(err)
 		return "", err
 	}
@@ -51,21 +51,21 @@ func (dao *S3Dao) GetTextFromS3(s3BucketName, s3Key string) (string, error) {
 
 func (dao *S3Dao) StoreTextInS3(s3BucketName, s3Key, payloadContentStr string) error {
 	payloadReader := strings.NewReader(payloadContentStr)
-	putObjectInput := &s3.PutObjectInput {
+	putObjectInput := &s3.PutObjectInput{
 		Bucket: &s3BucketName,
 		Key:    &s3Key,
-		Body: payloadReader,
+		Body:   payloadReader,
 	}
-   	if &dao.ObjectCannedACL != nil {
-   		putObjectInput.ACL = dao.ObjectCannedACL
-   	}
+	if &dao.ObjectCannedACL != nil {
+		putObjectInput.ACL = dao.ObjectCannedACL
+	}
 
-   	if dao.ServerSideEncryption != "" {
-   		putObjectInput.ServerSideEncryption = dao.ServerSideEncryption
+	if dao.ServerSideEncryption != "" {
+		putObjectInput.ServerSideEncryption = dao.ServerSideEncryption
 	}
 
 	ctx := context.Background()
-   	if dao.ServerSideEncryption != "" {
+	if dao.ServerSideEncryption != "" {
 		defEnc := &types.ServerSideEncryptionByDefault{
 			SSEAlgorithm:   dao.ServerSideEncryption,
 			KMSMasterKeyID: &s3Key,
@@ -80,7 +80,7 @@ func (dao *S3Dao) StoreTextInS3(s3BucketName, s3Key, payloadContentStr string) e
 	_, err := dao.S3Client.PutObject(ctx, putObjectInput)
 	if err != nil {
 		log.Println(err)
-		return errors.New("Failed to store the message content in an S3 object.")
+		return errors.New("Failed to store the message content in an S3Client object.")
 	}
 
 	return nil
@@ -94,11 +94,11 @@ func (dao *S3Dao) DeletePayloadFromS3(s3BucketName, s3Key string) error {
 	ctx := context.Background()
 	_, err := dao.S3Client.DeleteObject(ctx, deleteObjectInput)
 	if err != nil {
-		err := errors.New("Failed to delete the S3 object which contains the payload")
+		err := errors.New("Failed to delete the S3Client object which contains the payload")
 		log.Println(err)
 		return err
 	}
-	log.Printf("S3 object deleted, Bucket name: %s, Object key:  %s .", s3BucketName, s3Key) // info
+	log.Printf("S3Client object deleted, Bucket name: %s, Object key:  %s .", s3BucketName, s3Key) // info
 
 	return nil
 }

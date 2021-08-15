@@ -11,7 +11,7 @@ type PayloadStore interface {
 	StoreOriginalPayload(payload string) (string, error)
 
 	// StoreOriginalPayloadWithS3Key stores payload in a store that has higher payload size limit than that is supported by original payload store
-	// with S3 key
+	// with S3Client key
 	StoreOriginalPayloadForS3Key(payload, s3Key string) (string, error)
 
 	// GetOriginalPayload retrieves the original payload using the given payloadPointer. The pointer must have been obtained using
@@ -39,9 +39,9 @@ func (bps *S3BackedPayloadStore) StoreOriginalPayloadForS3Key(payload, s3Key str
 		return "", err
 	}
 
-	log.Printf("S3 object created, Bucket name: %s, Object key:  %s.", bps.S3BucketName, s3Key) // info
+	log.Printf("S3Client object created, Bucket name: %s, Object key:  %s.", bps.S3BucketName, s3Key) // info
 
-	// Convert S3 pointer (bucket name, key, etc) to JSON string
+	// Convert S3Client pointer (bucket name, key, etc) to JSON string
 	s3Pointer := PayloadS3Pointer{bps.S3BucketName, s3Key}
 	json, _ := s3Pointer.ToJson()
 
@@ -62,7 +62,7 @@ func (bps *S3BackedPayloadStore) GetOriginalPayload(payloadPointer string) (stri
 		return "", err
 	}
 
-	log.Printf("S3 object read, Bucket name: %s, Object key:  %s.", s3BucketName, s3Key) // info
+	log.Printf("S3Client object read, Bucket name: %s, Object key:  %s.", s3BucketName, s3Key) // info
 
 	return originalPayload, nil
 }

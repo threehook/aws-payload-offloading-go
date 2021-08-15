@@ -34,8 +34,7 @@ func FromJson(s3PointerJson string) (*PayloadS3Pointer, error) {
 	err := json.Unmarshal(bytes, &p)
 	if err != nil {
 		log.Println(err)
-		return nil, errors.New("Failed to read the S3 object pointer from given string")
+		return nil, errors.New("Failed to read the S3Client object pointer from given string")
 	}
 	return &p, nil
 }
-

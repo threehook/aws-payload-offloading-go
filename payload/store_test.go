@@ -107,12 +107,12 @@ func TestStoreOriginalPayloadOnS3Failure(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	mockS3Dao := mocks.NewMockS3DaoI(mockCtrl)
 
-	mockS3Dao.EXPECT().StoreTextInS3(s3BucketName, gomock.Any(), anyPayload).Return(errors.New("Failed to store the message content in an S3 object.")).Times(1)
+	mockS3Dao.EXPECT().StoreTextInS3(s3BucketName, gomock.Any(), anyPayload).Return(errors.New("Failed to store the message content in an S3Client object.")).Times(1)
 
 	payloadStore := S3BackedPayloadStore{S3BucketName: s3BucketName, S3Dao: mockS3Dao}
 	_, err := payloadStore.StoreOriginalPayload(anyPayload)
 
-	expectedError := errors.New("Failed to store the message content in an S3 object.")
+	expectedError := errors.New("Failed to store the message content in an S3Client object.")
 
 	assert := assert.New(t)
 	assert.Equal(expectedError, err)
@@ -155,14 +155,14 @@ func TestGetOriginalPayloadOnS3Failure(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	mockS3Dao := mocks.NewMockS3DaoI(mockCtrl)
 
-	mockS3Dao.EXPECT().GetTextFromS3(gomock.Any(), gomock.Any()).Return("", errors.New("S3 Exception")).Times(1)
+	mockS3Dao.EXPECT().GetTextFromS3(gomock.Any(), gomock.Any()).Return("", errors.New("S3Client Exception")).Times(1)
 
 	anyPointer := PayloadS3Pointer{S3BucketName: s3BucketName, S3Key: anyS3Key}
 	payloadStore := S3BackedPayloadStore{S3BucketName: s3BucketName, S3Dao: mockS3Dao}
 	ptrJson, _ := anyPointer.ToJson()
 	_, err := payloadStore.GetOriginalPayload(ptrJson)
 
-	expectedError := errors.New("S3 Exception")
+	expectedError := errors.New("S3Client Exception")
 
 	assert := assert.New(t)
 	assert.Equal(expectedError, err)
