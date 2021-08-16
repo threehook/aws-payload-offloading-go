@@ -2,7 +2,6 @@ package config
 
 import (
 	"errors"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	po "github.com/threehook/aws-payload-offloading-go"
 	"log"
@@ -11,7 +10,7 @@ import (
 type PayloadStorageConfig struct {
 	//private static final Logger LOG = LoggerFactory.getLogger(PayloadStorageConfig.class);
 
-	S3Client             po.S3ClientI
+	S3Client             *po.S3ClientI
 	S3BucketName         string
 	PayloadSizeThreshold int
 	AlwaysThroughS3      bool
@@ -35,7 +34,7 @@ func NewPayloadStorageConfigurationFromOther(other *PayloadStorageConfig) *Paylo
 }
 
 // SetPayloadSupportEnabled enables support for payloads
-func (psc *PayloadStorageConfig) SetPayloadSupportEnabled(s3Client *s3.Client, s3BucketName string) error {
+func (psc *PayloadStorageConfig) SetPayloadSupportEnabled(s3Client *po.S3ClientI, s3BucketName string) error {
 	if &s3Client == nil || &s3BucketName == nil {
 		err := errors.New("S3Client client and/or S3Client bucket name cannot be null.")
 		log.Println(err)
@@ -53,8 +52,8 @@ func (psc *PayloadStorageConfig) SetPayloadSupportEnabled(s3Client *s3.Client, s
 }
 
 // WithPayloadSupportEnabled enables support for payload
-func (psc *PayloadStorageConfig) WithPayloadSupportEnabled(s3 *s3.Client, s3BucketName string) (*PayloadStorageConfig, error) {
-	if err := psc.SetPayloadSupportEnabled(s3, s3BucketName); err != nil {
+func (psc *PayloadStorageConfig) WithPayloadSupportEnabled(s3Client *po.S3ClientI, s3BucketName string) (*PayloadStorageConfig, error) {
+	if err := psc.SetPayloadSupportEnabled(s3Client, s3BucketName); err != nil {
 		return nil, err
 	}
 	return psc, nil
