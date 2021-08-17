@@ -10,7 +10,7 @@ import (
 type PayloadStorageConfig struct {
 	//private static final Logger LOG = LoggerFactory.getLogger(PayloadStorageConfig.class);
 
-	S3Client             *po.S3ClientI
+	S3Client             po.S3ClientI
 	S3BucketName         string
 	PayloadSizeThreshold int
 	AlwaysThroughS3      bool
@@ -34,7 +34,7 @@ func NewPayloadStorageConfigurationFromOther(other *PayloadStorageConfig) *Paylo
 }
 
 // SetPayloadSupportEnabled enables support for payloads
-func (psc *PayloadStorageConfig) SetPayloadSupportEnabled(s3Client *po.S3ClientI, s3BucketName string) error {
+func (psc *PayloadStorageConfig) SetPayloadSupportEnabled(s3Client po.S3ClientI, s3BucketName string) error {
 	if &s3Client == nil || &s3BucketName == nil {
 		err := errors.New("S3Client client and/or S3Client bucket name cannot be null.")
 		log.Println(err)
@@ -52,7 +52,7 @@ func (psc *PayloadStorageConfig) SetPayloadSupportEnabled(s3Client *po.S3ClientI
 }
 
 // WithPayloadSupportEnabled enables support for payload
-func (psc *PayloadStorageConfig) WithPayloadSupportEnabled(s3Client *po.S3ClientI, s3BucketName string) (*PayloadStorageConfig, error) {
+func (psc *PayloadStorageConfig) WithPayloadSupportEnabled(s3Client po.S3ClientI, s3BucketName string) (*PayloadStorageConfig, error) {
 	if err := psc.SetPayloadSupportEnabled(s3Client, s3BucketName); err != nil {
 		return nil, err
 	}
