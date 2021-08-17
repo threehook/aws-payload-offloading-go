@@ -21,7 +21,7 @@ var (
 
 func TestStoreTextInS3WithoutSSEOrCanned(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
-	mockS3Client := mocks.NewMockS3SvcClntI(mockCtrl)
+	mockS3Client := mocks.NewMockS3SvcClientI(mockCtrl)
 
 	// Expect PutObject to be called once with context and PutObjectInput as parameters. Ignore the Return.
 	ctx := context.Background()
@@ -50,7 +50,7 @@ func TestStoreTextInS3WithoutSSEOrCanned(t *testing.T) {
 
 func TestStoreTextInS3WithSSE(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
-	mockS3Client := mocks.NewMockS3SvcClntI(mockCtrl)
+	mockS3Client := mocks.NewMockS3SvcClientI(mockCtrl)
 
 	// Expect PutObject to be called once with context and PutObjectInput as parameters. Ignore the Return.
 	ctx := context.Background()
@@ -81,7 +81,7 @@ func TestStoreTextInS3WithSSE(t *testing.T) {
 
 func TestStoreTextInS3WithBoth(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
-	mockS3Client := mocks.NewMockS3SvcClntI(mockCtrl)
+	mockS3Client := mocks.NewMockS3SvcClientI(mockCtrl)
 
 	// Expect PutObject to be called once with context and PutObjectInput as parameters. Ignore the Return.
 	ctx := context.Background()

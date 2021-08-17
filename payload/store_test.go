@@ -25,7 +25,7 @@ func TestMain(m *testing.M) {
 
 func TestStoreOriginalPayloadOnSuccess(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
-	mockS3Dao := mocks.NewMockS3DaoI(mockCtrl)
+	mockS3Dao := mocks.NewMockS3DaoClientI(mockCtrl)
 
 	var capturedArgsMap = make(map[string]interface{})
 	mockS3Dao.EXPECT().StoreTextInS3(s3BucketName, gomock.Any(), anyPayload).Do(
@@ -46,7 +46,7 @@ func TestStoreOriginalPayloadOnSuccess(t *testing.T) {
 
 func TestStoreOriginalPayloadWithS3KeyOnSuccess(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
-	mockS3Dao := mocks.NewMockS3DaoI(mockCtrl)
+	mockS3Dao := mocks.NewMockS3DaoClientI(mockCtrl)
 
 	mockS3Dao.EXPECT().StoreTextInS3(s3BucketName, anyS3Key, anyPayload).Times(1)
 
@@ -62,7 +62,7 @@ func TestStoreOriginalPayloadWithS3KeyOnSuccess(t *testing.T) {
 
 func TestStoreOriginalPayloadDoesAlwaysCreateNewObjects(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
-	mockS3Dao := mocks.NewMockS3DaoI(mockCtrl)
+	mockS3Dao := mocks.NewMockS3DaoClientI(mockCtrl)
 
 	var capturedArgsMap = make(map[string]interface{})
 	firstCall := mockS3Dao.EXPECT().StoreTextInS3(s3BucketName, gomock.Any(), anyPayload)
@@ -100,7 +100,7 @@ func TestStoreOriginalPayloadDoesAlwaysCreateNewObjects(t *testing.T) {
 
 func TestStoreOriginalPayloadOnS3Failure(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
-	mockS3Dao := mocks.NewMockS3DaoI(mockCtrl)
+	mockS3Dao := mocks.NewMockS3DaoClientI(mockCtrl)
 
 	mockS3Dao.EXPECT().StoreTextInS3(s3BucketName, gomock.Any(), anyPayload).Return(errors.New("Failed to store the message content in an S3Client object.")).Times(1)
 
@@ -115,7 +115,7 @@ func TestStoreOriginalPayloadOnS3Failure(t *testing.T) {
 
 func TestGetOriginalPayloadOnSuccess(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
-	mockS3Dao := mocks.NewMockS3DaoI(mockCtrl)
+	mockS3Dao := mocks.NewMockS3DaoClientI(mockCtrl)
 
 	var capturedArgsMap = make(map[string]interface{})
 	mockS3Dao.EXPECT().GetTextFromS3(gomock.Any(), gomock.Any()).Return(anyPayload, nil).Do(
@@ -138,7 +138,7 @@ func TestGetOriginalPayloadOnSuccess(t *testing.T) {
 
 func TestGetOriginalPayloadIncorrectPointer(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
-	mockS3Dao := mocks.NewMockS3DaoI(mockCtrl)
+	mockS3Dao := mocks.NewMockS3DaoClientI(mockCtrl)
 
 	mockS3Dao.EXPECT().GetTextFromS3(gomock.Any(), gomock.Any()).Times(0)
 
@@ -148,7 +148,7 @@ func TestGetOriginalPayloadIncorrectPointer(t *testing.T) {
 
 func TestGetOriginalPayloadOnS3Failure(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
-	mockS3Dao := mocks.NewMockS3DaoI(mockCtrl)
+	mockS3Dao := mocks.NewMockS3DaoClientI(mockCtrl)
 
 	mockS3Dao.EXPECT().GetTextFromS3(gomock.Any(), gomock.Any()).Return("", errors.New("S3Client Exception")).Times(1)
 
@@ -165,7 +165,7 @@ func TestGetOriginalPayloadOnS3Failure(t *testing.T) {
 
 func TestDeleteOriginalPayloadOnSuccess(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
-	mockS3Dao := mocks.NewMockS3DaoI(mockCtrl)
+	mockS3Dao := mocks.NewMockS3DaoClientI(mockCtrl)
 
 	var capturedArgsMap = make(map[string]interface{})
 	mockS3Dao.EXPECT().DeletePayloadFromS3(gomock.Any(), gomock.Any()).Do(
@@ -187,7 +187,7 @@ func TestDeleteOriginalPayloadOnSuccess(t *testing.T) {
 
 func TestDeleteOriginalPayloadIncorrectPointer(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
-	mockS3Dao := mocks.NewMockS3DaoI(mockCtrl)
+	mockS3Dao := mocks.NewMockS3DaoClientI(mockCtrl)
 
 	mockS3Dao.EXPECT().DeletePayloadFromS3(gomock.Any(), gomock.Any()).Times(0)
 

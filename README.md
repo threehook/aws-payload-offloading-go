@@ -1,2 +1,2 @@
-mockgen -destination=mocks/mock_s3_svcclnt.go -package=mocks github.com/threehook/aws-payload-offloading-go/s3 S3SvcClntI<br/>
-mockgen -destination=mocks/mock_s3_daoclnt.go -package=mocks github.com/threehook/aws-payload-offloading-go/s3 S3DaoClntI<br/>
+mockgen -destination=mocks/mock_s3_svcclnt.go -package=mocks github.com/threehook/aws-payload-offloading-go/s3 S3SvcClientI<br/>
+mockgen -destination=mocks/mock_s3_daoclnt.go -package=mocks github.com/threehook/aws-payload-offloading-go/s3 S3DaoClientI<br/>
