@@ -25,7 +25,7 @@ type PayloadStore interface {
 
 type S3BackedPayloadStore struct {
 	S3BucketName string
-	S3Dao        s3.S3DaoI
+	S3Dao        s3.S3DaoClntI
 }
 
 func (bps *S3BackedPayloadStore) StoreOriginalPayload(payload string) (string, error) {

@@ -17,8 +17,8 @@ const (
 	anyPayload   = "AnyPayload"
 )
 
-// Suppress logging in unit tests
 func TestMain(m *testing.M) {
+	// Suppress logging in unit tests
 	log.SetOutput(ioutil.Discard)
 	os.Exit(m.Run())
 }
@@ -48,12 +48,7 @@ func TestStoreOriginalPayloadWithS3KeyOnSuccess(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	mockS3Dao := mocks.NewMockS3DaoI(mockCtrl)
 
-	var capturedArgsMap = make(map[string]interface{})
-	mockS3Dao.EXPECT().StoreTextInS3(s3BucketName, anyS3Key, anyPayload).Do(
-		func(s3BucketName, s3Key, payloadContentStr string) {
-			capturedArgsMap["s3Key"] = s3Key
-		},
-	).Times(1)
+	mockS3Dao.EXPECT().StoreTextInS3(s3BucketName, anyS3Key, anyPayload).Times(1)
 
 	payloadStore := S3BackedPayloadStore{S3BucketName: s3BucketName, S3Dao: mockS3Dao}
 	actualPayloadPointer, _ := payloadStore.StoreOriginalPayloadForS3Key(anyPayload, anyS3Key)

@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-type S3DaoI interface {
+type S3DaoClntI interface {
 	GetTextFromS3(s3BucketName, s3Key string) (string, error)
 	StoreTextInS3(s3BucketName, s3Key, payloadContentStr string) error
 	DeletePayloadFromS3(s3BucketName, s3Key string) error
@@ -18,7 +18,7 @@ type S3DaoI interface {
 
 type S3Dao struct {
 	// private static final Logger LOG = LoggerFactory.getLogger(S3Dao.class);
-	S3Client             S3ClientI
+	S3Client             S3SvcClntI
 	ServerSideEncryption types.ServerSideEncryption
 	ObjectCannedACL      types.ObjectCannedACL
 }
