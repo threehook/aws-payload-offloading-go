@@ -1,4 +1,4 @@
-package payload_offloading
+package s3
 
 import (
 	"bytes"

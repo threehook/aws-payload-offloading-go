@@ -2,7 +2,7 @@ package payload
 
 import (
 	"github.com/google/uuid"
-	po "github.com/threehook/aws-payload-offloading-go"
+	"github.com/threehook/aws-payload-offloading-go/s3"
 	"log"
 )
 
@@ -25,7 +25,7 @@ type PayloadStore interface {
 
 type S3BackedPayloadStore struct {
 	S3BucketName string
-	S3Dao        po.S3DaoI
+	S3Dao        s3.S3DaoI
 }
 
 func (bps *S3BackedPayloadStore) StoreOriginalPayload(payload string) (string, error) {
