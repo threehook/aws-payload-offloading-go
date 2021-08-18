@@ -11,7 +11,7 @@ type PayloadStorageConfig struct {
 	//private static final Logger LOG = LoggerFactory.getLogger(PayloadStorageConfig.class);
 	S3Client             s3.S3SvcClientI
 	S3BucketName         string
-	PayloadSizeThreshold int
+	PayloadSizeThreshold int32
 	AlwaysThroughS3      bool
 	PayloadSupport       bool
 	// This field is optional, it is set only when we want to configure S3 Server Side Encryption with KMS.
