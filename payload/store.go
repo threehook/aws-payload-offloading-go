@@ -39,7 +39,7 @@ func (bps *S3BackedPayloadStore) StoreOriginalPayloadForS3Key(payload, s3Key str
 		return "", err
 	}
 
-	log.Printf("S3Client object created, Bucket name: %s, Object key:  %s.", bps.S3BucketName, s3Key) // info
+	log.Printf("S3Client object created, Bucket name: %s, Object key: %s.", bps.S3BucketName, s3Key) // info
 
 	// Convert S3Client pointer (bucket name, key, etc) to JSON string
 	s3Pointer := PayloadS3Pointer{bps.S3BucketName, s3Key}

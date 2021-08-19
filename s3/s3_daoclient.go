@@ -6,6 +6,7 @@ import (
 	"errors"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
+	"github.com/threehook/aws-payload-offloading-go/encryption"
 	"log"
 	"strings"
 )
@@ -18,9 +19,9 @@ type S3DaoClientI interface {
 
 type S3Dao struct {
 	// private static final Logger LOG = LoggerFactory.getLogger(S3Dao.class);
-	S3Client             S3SvcClientI
-	ServerSideEncryption types.ServerSideEncryption
-	ObjectCannedACL      types.ObjectCannedACL
+	S3Client                     S3SvcClientI
+	ServerSideEncryptionStrategy encryption.EncryptionStrategy
+	ObjectCannedACL              types.ObjectCannedACL
 }
 
 func (dao *S3Dao) GetTextFromS3(s3BucketName, s3Key string) (string, error) {
@@ -56,26 +57,26 @@ func (dao *S3Dao) StoreTextInS3(s3BucketName, s3Key, payloadContentStr string) e
 		Key:    &s3Key,
 		Body:   payloadReader,
 	}
-	if &dao.ObjectCannedACL != nil {
+	if dao.ObjectCannedACL != "" {
 		putObjectInput.ACL = dao.ObjectCannedACL
 	}
 
-	if dao.ServerSideEncryption != "" {
-		putObjectInput.ServerSideEncryption = dao.ServerSideEncryption
+	if dao.ServerSideEncryptionStrategy != nil {
+		dao.ServerSideEncryptionStrategy.Decorate(putObjectInput)
 	}
 
 	ctx := context.Background()
-	if dao.ServerSideEncryption != "" {
-		defEnc := &types.ServerSideEncryptionByDefault{
-			SSEAlgorithm:   dao.ServerSideEncryption,
-			KMSMasterKeyID: &s3Key,
-		}
-		rule := types.ServerSideEncryptionRule{ApplyServerSideEncryptionByDefault: defEnc}
-		rules := []types.ServerSideEncryptionRule{rule}
-		encrConfig := &types.ServerSideEncryptionConfiguration{Rules: rules}
-		encryptionInput := &s3.PutBucketEncryptionInput{Bucket: &s3BucketName, ServerSideEncryptionConfiguration: encrConfig}
-		dao.S3Client.PutBucketEncryption(ctx, encryptionInput)
-	}
+	//if dao.ServerSideEncryptionStrategy != nil {
+	//	defEnc := &types.ServerSideEncryptionByDefault{
+	//		SSEAlgorithm:   dao.ServerSideEncryption,
+	//		KMSMasterKeyID: &s3Key,
+	//	}
+	//	rule := types.ServerSideEncryptionRule{ApplyServerSideEncryptionByDefault: defEnc}
+	//	rules := []types.ServerSideEncryptionRule{rule}
+	//	encrConfig := &types.ServerSideEncryptionConfiguration{Rules: rules}
+	//	encryptionInput := &s3.PutBucketEncryptionInput{Bucket: &s3BucketName, ServerSideEncryptionConfiguration: encrConfig}
+	//	dao.S3Client.PutBucketEncryption(ctx, encryptionInput)
+	//}
 
 	_, err := dao.S3Client.PutObject(ctx, putObjectInput)
 	if err != nil {
