@@ -5,7 +5,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 )
 
-type EncryptionStrategy interface {
+type ServerSideEncryptionStrategy interface {
 	Decorate(input *s3.PutObjectInput)
 }
 

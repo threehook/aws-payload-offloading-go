@@ -3,6 +3,7 @@ package config
 import (
 	"errors"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
+	"github.com/threehook/aws-payload-offloading-go/encryption"
 	"github.com/threehook/aws-payload-offloading-go/s3"
 	"log"
 )
@@ -15,20 +16,20 @@ type PayloadStorageConfig struct {
 	AlwaysThroughS3      bool
 	PayloadSupport       bool
 	// This field is optional, it is set only when we want to configure S3 Server Side Encryption with KMS.
-	ServerSideEncryption types.ServerSideEncryption
+	ServerSideEncryptionStrategy encryption.ServerSideEncryptionStrategy
 	// This field is optional, it is set only when we want to add access control list to Amazon S3 buckets and objects
 	ObjectCannedACL types.ObjectCannedACL
 }
 
 func NewPayloadStorageConfigurationFromOther(other *PayloadStorageConfig) *PayloadStorageConfig {
 	return &PayloadStorageConfig{
-		S3Client:             other.S3Client,
-		S3BucketName:         other.S3BucketName,
-		PayloadSupport:       other.PayloadSupport,
-		AlwaysThroughS3:      other.AlwaysThroughS3,
-		PayloadSizeThreshold: other.PayloadSizeThreshold,
-		ServerSideEncryption: other.ServerSideEncryption,
-		ObjectCannedACL:      other.ObjectCannedACL,
+		S3Client:                     other.S3Client,
+		S3BucketName:                 other.S3BucketName,
+		PayloadSupport:               other.PayloadSupport,
+		AlwaysThroughS3:              other.AlwaysThroughS3,
+		PayloadSizeThreshold:         other.PayloadSizeThreshold,
+		ServerSideEncryptionStrategy: other.ServerSideEncryptionStrategy,
+		ObjectCannedACL:              other.ObjectCannedACL,
 	}
 }
 

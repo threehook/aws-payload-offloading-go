@@ -20,7 +20,7 @@ type S3DaoClientI interface {
 type S3Dao struct {
 	// private static final Logger LOG = LoggerFactory.getLogger(S3Dao.class);
 	S3Client                     S3SvcClientI
-	ServerSideEncryptionStrategy encryption.EncryptionStrategy
+	ServerSideEncryptionStrategy encryption.ServerSideEncryptionStrategy
 	ObjectCannedACL              types.ObjectCannedACL
 }
 
