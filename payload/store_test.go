@@ -39,9 +39,8 @@ func TestStoreOriginalPayloadOnSuccess(t *testing.T) {
 
 	expectedPayloadPointer := &PayloadS3Pointer{s3BucketName, capturedArgsMap["s3Key"].(string)}
 
-	assert := assert.New(t)
 	ptrJson, _ := expectedPayloadPointer.ToJson()
-	assert.Equal(ptrJson, actualPayloadPointer)
+	assert.Equal(t, ptrJson, actualPayloadPointer)
 }
 
 func TestStoreOriginalPayloadWithS3KeyOnSuccess(t *testing.T) {
@@ -55,9 +54,8 @@ func TestStoreOriginalPayloadWithS3KeyOnSuccess(t *testing.T) {
 
 	expectedPayloadPointer := &PayloadS3Pointer{s3BucketName, anyS3Key}
 
-	assert := assert.New(t)
 	ptrJson, _ := expectedPayloadPointer.ToJson()
-	assert.Equal(ptrJson, actualPayloadPointer)
+	assert.Equal(t, ptrJson, actualPayloadPointer)
 }
 
 func TestStoreOriginalPayloadDoesAlwaysCreateNewObjects(t *testing.T) {
@@ -90,12 +88,11 @@ func TestStoreOriginalPayloadDoesAlwaysCreateNewObjects(t *testing.T) {
 	anyExpectedPayloadPointer := &PayloadS3Pointer{s3BucketName, capturedArgsMap["s3Key_1"].(string)}
 	anyOtherExpectedPayloadPointer := &PayloadS3Pointer{s3BucketName, capturedArgsMap["s3Key_2"].(string)}
 
-	assert := assert.New(t)
 	ptrJson, _ := anyExpectedPayloadPointer.ToJson()
-	assert.Equal(ptrJson, anyActualPayloadPointer)
+	assert.Equal(t, ptrJson, anyActualPayloadPointer)
 	otherPtrJson, _ := anyOtherExpectedPayloadPointer.ToJson()
-	assert.Equal(otherPtrJson, anyOtherActualPayloadPointer)
-	assert.NotEqual(anyExpectedPayloadPointer, anyOtherExpectedPayloadPointer)
+	assert.Equal(t, otherPtrJson, anyOtherActualPayloadPointer)
+	assert.NotEqual(t, anyExpectedPayloadPointer, anyOtherExpectedPayloadPointer)
 }
 
 func TestStoreOriginalPayloadOnS3Failure(t *testing.T) {
@@ -109,8 +106,7 @@ func TestStoreOriginalPayloadOnS3Failure(t *testing.T) {
 
 	expectedError := errors.New("Failed to store the message content in an S3Client object.")
 
-	assert := assert.New(t)
-	assert.Equal(expectedError, err)
+	assert.Equal(t, expectedError, err)
 }
 
 func TestGetOriginalPayloadOnSuccess(t *testing.T) {
@@ -130,10 +126,9 @@ func TestGetOriginalPayloadOnSuccess(t *testing.T) {
 	ptrJson, _ := anyPointer.ToJson()
 	actualPayload, _ := payloadStore.GetOriginalPayload(ptrJson)
 
-	assert := assert.New(t)
-	assert.Equal(anyS3Key, capturedArgsMap["s3Key"])
-	assert.Equal(s3BucketName, capturedArgsMap["s3BucketName"])
-	assert.Equal(anyPayload, actualPayload)
+	assert.Equal(t, anyS3Key, capturedArgsMap["s3Key"])
+	assert.Equal(t, s3BucketName, capturedArgsMap["s3BucketName"])
+	assert.Equal(t, anyPayload, actualPayload)
 }
 
 func TestGetOriginalPayloadIncorrectPointer(t *testing.T) {
@@ -159,8 +154,7 @@ func TestGetOriginalPayloadOnS3Failure(t *testing.T) {
 
 	expectedError := errors.New("S3Client Exception")
 
-	assert := assert.New(t)
-	assert.Equal(expectedError, err)
+	assert.Equal(t, expectedError, err)
 }
 
 func TestDeleteOriginalPayloadOnSuccess(t *testing.T) {
@@ -180,9 +174,8 @@ func TestDeleteOriginalPayloadOnSuccess(t *testing.T) {
 	ptrJson, _ := anyPointer.ToJson()
 	payloadStore.DeleteOriginalPayload(ptrJson)
 
-	assert := assert.New(t)
-	assert.Equal(anyS3Key, capturedArgsMap["s3Key"])
-	assert.Equal(s3BucketName, capturedArgsMap["s3BucketName"])
+	assert.Equal(t, anyS3Key, capturedArgsMap["s3Key"])
+	assert.Equal(t, s3BucketName, capturedArgsMap["s3BucketName"])
 }
 
 func TestDeleteOriginalPayloadIncorrectPointer(t *testing.T) {

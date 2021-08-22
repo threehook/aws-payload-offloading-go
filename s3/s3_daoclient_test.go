@@ -43,10 +43,9 @@ func TestStoreTextInS3WithoutSSEOrCanned(t *testing.T) {
 		t.Errorf("Expected no error, but got: '%v'", err)
 	}
 
-	assert := assert.New(t)
-	assert.Empty(capturedArgsMap["serverSideEncryption"])
-	assert.Empty(capturedArgsMap["acl"])
-	assert.Equal(capturedArgsMap["bucket"], s3BucketName)
+	assert.Empty(t, capturedArgsMap["serverSideEncryption"])
+	assert.Empty(t, capturedArgsMap["acl"])
+	assert.Equal(t, capturedArgsMap["bucket"], s3BucketName)
 }
 
 func TestStoreTextInS3WithSSE(t *testing.T) {
@@ -66,18 +65,15 @@ func TestStoreTextInS3WithSSE(t *testing.T) {
 		},
 	).Times(1)
 
-	//mockS3Client.EXPECT().PutBucketEncryption(ctx, gomock.Any()).Times(1)
-
 	dao := S3Dao{S3Client: mockS3Client, ServerSideEncryptionStrategy: &encryption.AwsManagedCmk{}, ObjectCannedACL: ""}
 	err := dao.StoreTextInS3(s3BucketName, anyS3Key, anyPayload)
 	if err != nil {
 		t.Errorf("Expected no error, but got: '%v'", err)
 	}
 
-	assert := assert.New(t)
-	assert.Equal(capturedArgsMap["serverSideEncryption"], serverSideEncryptionStrategy)
-	assert.Empty(capturedArgsMap["acl"])
-	assert.Equal(capturedArgsMap["bucket"], s3BucketName)
+	assert.Equal(t, capturedArgsMap["serverSideEncryption"], serverSideEncryptionStrategy)
+	assert.Empty(t, capturedArgsMap["acl"])
+	assert.Equal(t, capturedArgsMap["bucket"], s3BucketName)
 }
 
 func TestStoreTextInS3WithBoth(t *testing.T) {
@@ -105,9 +101,8 @@ func TestStoreTextInS3WithBoth(t *testing.T) {
 		t.Errorf("Expected no error, but got: '%v'", err)
 	}
 
-	assert := assert.New(t)
-	assert.Equal(capturedArgsMap["serverSideEncryption"], serverSideEncryptionStrategy)
-	assert.Equal(capturedArgsMap["sseKMSKeyId"], awsTestCustomerKey)
-	assert.Equal(capturedArgsMap["acl"], objectCannedACL)
-	assert.Equal(capturedArgsMap["bucket"], s3BucketName)
+	assert.Equal(t, capturedArgsMap["serverSideEncryption"], serverSideEncryptionStrategy)
+	assert.Equal(t, capturedArgsMap["sseKMSKeyId"], awsTestCustomerKey)
+	assert.Equal(t, capturedArgsMap["acl"], objectCannedACL)
+	assert.Equal(t, capturedArgsMap["bucket"], s3BucketName)
 }

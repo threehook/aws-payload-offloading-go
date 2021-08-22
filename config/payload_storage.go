@@ -50,19 +50,3 @@ func (psc *PayloadStorageConfig) SetPayloadSupportEnabled(s3Client s3.S3SvcClien
 
 	return nil
 }
-
-// WithPayloadSupportEnabled enables support for payload
-func (psc *PayloadStorageConfig) WithPayloadSupportEnabled(s3Client s3.S3SvcClientI, s3BucketName string) (*PayloadStorageConfig, error) {
-	if err := psc.SetPayloadSupportEnabled(s3Client, s3BucketName); err != nil {
-		return nil, err
-	}
-	return psc, nil
-}
-
-// SetPayloadSupportDisabled disables support for payloads
-func (psc *PayloadStorageConfig) SetPayloadSupportDisabled() {
-	psc.S3Client = nil
-	psc.S3BucketName = ""
-	psc.PayloadSupport = false
-	log.Println("Payload support disabled.") // info
-}
